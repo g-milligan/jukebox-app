@@ -81,6 +81,53 @@ Note: Remember to run this command in a separate `powershell` terminal outside o
 
 The server should run at: [http://127.0.0.1:8000/](http://127.0.0.1:8000/) by default. You should see your `{"Hi": "World"}` message when accessing this url.
 
+Note: for convenience, I have wrapped this sample get command in a `.bat` script. Just run the following to execute this `curl` GET command:
+
+[projectRoot]/
+``` shell
+.\bat\get.bat
+# Output: {"Hi":"World!"}
+```
+
 `--reload` flag causes the server to automatically refresh every time changes are made to `main.py`. When you make changes, you will see the server logs indicate the server restarted. You will still need to refresh the browser page to see the changes.
 
+## Post Endpoint
+
+Add the following to `main.py`:
+
+``` python
+items = []
+
+@app.post("/items")
+def create_item(item: str):
+    items.append(item)
+    return items
+```
+
+`item: str` is a parameter coming from the post request.
+
+`item` will be appended to the array, `items`, then the `items` array will be returned to the frontend.
+
+To post a new item to the `items` endpoint, the following terminal `curl` command can be used:
+
+``` shell
+# request 1
+curl -X POST -H "Content-Type: application/json" http://127.0.0.1:8000/items?item=grap
+
+# request 2
+curl -X POST -H "Content-Type: application/json" http://127.0.0.1:8000/items?item=pear
+```
+
+Note: for convenience, I have wrapped this sample post command in a `.bat` script. Just run the following to execute this `curl` POST command:
+
+[projectRoot]/
+``` shell
+.\bat\post.bat {fruitName}
+
+.\bat\post.bat grape
+# Output: ["grape"]
+
+.\bat\post.bat pear
+# Output: ["grape","pear"]
+```
 
