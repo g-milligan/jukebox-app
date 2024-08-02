@@ -10,8 +10,13 @@ def root():
 
 @app.post("/items")
 def create_item(item: str):
-    items.append(item)
+    items.extend(item.split(","))
     return items
+
+@app.get("/items")
+def list_items(limit: int):
+    # get items in the array from index range 0 to a given limit
+    return items[0:limit]
 
 @app.get("/item/{item_index}")
 def get_item(item_index: int):

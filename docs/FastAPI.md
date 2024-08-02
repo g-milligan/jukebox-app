@@ -214,3 +214,33 @@ In order to throw this type of exception, the import statement in `main.py` was 
 from fastapi import FastAPI, HTTPException
 ```
 
+## Get all Items
+
+New route code to add to `main.py`:
+``` python
+@app.get("/items")
+def list_items(limit: int):
+    # get items in the array from index range 0 to a given limit
+    return items[0:limit]
+```
+
+Quickly create many items in the database with a convenience `.bat` script:
+
+``` shell
+.\bat\load_multiple_items.bat
+```
+
+Call the endpoint with a limit of 5:
+
+``` shell
+curl http://127.0.0.1:8000/items?limit=5
+# Sample Output: ["blueberry","grape","watermellon","peach","orange"]
+```
+
+Convenience script, called with a limit of 5:
+
+``` shell
+.\bat\get_all.bat 5
+# Sample Output: ["blueberry","grape","watermellon","peach","orange"]
+```
+
