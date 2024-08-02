@@ -147,7 +147,7 @@ Note: for convenience, I have wrapped this sample post command in a `.bat` scrip
 Added a new route to `main.py`:
 
 ``` python
-@app.get("/item")
+@app.get("/item/{item_index}")
 def get_item(item_index: int):
     return items[item_index]
 ```
@@ -165,7 +165,7 @@ Make sure `items` contains two items:
 Use the new endpoint to get one of the items by its index:
 
 ``` shell
-curl http://127.0.0.1:8000/item?item_index=0
+curl http://127.0.0.1:8000/item/0
 # Output: "cherry"
 ```
 
@@ -183,4 +183,34 @@ Or use the convenience `.bat` file:
 ```
 
 Notice, since the last request provided an index out of range, an `Internal Server Error` was triggered. 
+
+## Error Handling
+
+Instead of throwin a `Internal Server Error` a better error would be [404 not found](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404). 
+
+Note: [Visit MDN to see more error documentation](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)
+
+Update the `main.py` route:
+
+``` python
+@app.get("/item/{item_index}")
+def get_item(item_index: int):
+    if item_index < len(items):
+        return items[item_index]
+    else:
+        raise HTTPException(status_code=404, detail=f"404 Not found: Index({item_index}) out of range in Length({len(items)})")
+```
+
+If the given index is out of range, a better error message with exception status `404` will be returned.
+
+``` shell
+.\bat\get_by_index.bat 2
+# Output: {"detail":"404 Not found: Index(2) out of range in Length(0)"}
+```
+
+In order to throw this type of exception, the import statement in `main.py` was also updated to include `HTTPException`:
+
+``` python
+from fastapi import FastAPI, HTTPException
+```
 
