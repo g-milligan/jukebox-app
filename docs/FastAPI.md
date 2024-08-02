@@ -38,6 +38,8 @@ python -m pip --version
 [Python FastAPI Tutorial: Build a REST API in 15 Minutes
 ](https://www.youtube.com/watch?v=iWS9ogMPOI0)
 
+The following tutorial is based on the above YouTube tutorial with some additional notes about using `.bat` scripts to save and make API requests more conveniently. 
+
 ## Install fastapi
 
 [projectRoot]
@@ -81,7 +83,14 @@ Note: Remember to run this command in a separate `powershell` terminal outside o
 
 The server should run at: [http://127.0.0.1:8000/](http://127.0.0.1:8000/) by default. You should see your `{"Hi": "World"}` message when accessing this url.
 
-Note: for convenience, I have wrapped this sample get command in a `.bat` script. Just run the following to execute this `curl` GET command:
+Normally, GET requests can be made directly through the browser, but for the sake of convenience, a curl command in the terminal can also be used to make a GET request:
+
+``` shell
+curl http://127.0.0.1:8000/
+# Output: {"Hi":"World!"}
+```
+
+Note: for convenience, I have wrapped this sample `curl` request in a `.bat` script. Just run the following to execute this `curl` GET command:
 
 [projectRoot]/
 ``` shell
@@ -113,9 +122,11 @@ To post a new item to the `items` endpoint, the following terminal `curl` comman
 ``` shell
 # request 1
 curl -X POST -H "Content-Type: application/json" http://127.0.0.1:8000/items?item=grap
+# Output: ["grape"]
 
 # request 2
 curl -X POST -H "Content-Type: application/json" http://127.0.0.1:8000/items?item=pear
+# Output: ["grape","pear"]
 ```
 
 Note: for convenience, I have wrapped this sample post command in a `.bat` script. Just run the following to execute this `curl` POST command:
@@ -130,4 +141,46 @@ Note: for convenience, I have wrapped this sample post command in a `.bat` scrip
 .\bat\post.bat pear
 # Output: ["grape","pear"]
 ```
+
+## Getting an Item By its Index
+
+Added a new route to `main.py`:
+
+``` python
+@app.get("/item")
+def get_item(item_index: int):
+    return items[item_index]
+```
+
+Make sure `items` contains two items:
+
+``` shell
+.\bat\post.bat cherry
+# Output: ["cherry"]
+
+.\bat\post.bat banana
+# Output: ["cherry", "banana"]
+```
+
+Use the new endpoint to get one of the items by its index:
+
+``` shell
+curl http://127.0.0.1:8000/item?item_index=0
+# Output: "cherry"
+```
+
+Or use the convenience `.bat` file:
+
+``` shell
+.\bat\get_by_index.bat 0
+# Output: "cherry"
+
+.\bat\get_by_index.bat 1
+# Output: "banana"
+
+.\bat\get_by_index.bat 2
+# Output: Internal Server Error
+```
+
+Notice, since the last request provided an index out of range, an `Internal Server Error` was triggered. 
 

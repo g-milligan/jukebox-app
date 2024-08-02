@@ -12,3 +12,7 @@ def root():
 def create_item(item: str):
     items.append(item)
     return items
+
+@app.get("/item")
+def get_item(item_index: int):
+    return items[item_index]
