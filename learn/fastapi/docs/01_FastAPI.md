@@ -1,4 +1,4 @@
-# FastAPI
+# FastAPI (part 1)
 
 ## Setup Python Path
 
@@ -17,6 +17,22 @@ C:\Users\{YOUR_USERNAME}\AppData\Local\Programs\Python\Python310
 ```
 
 Note, the path must be difined in your `Path` variable under `system`, not `user` environment variables.
+
+If setting the environment variable in the path still fails, you can define `python` as an alias for your powershell sessions:
+
+``` shell
+# create or open an existing profile for powershell
+ notepad $PROFILE
+
+# This should open a text file. Paste your alias into the profile text file (adjust the path to match your local python.exe path):
+Set-Alias python "C:\Users\{USER}\AppData\Local\Programs\Python\Python310\python.exe"
+```
+
+This alias should continue to persist between powershell sessions. 
+
+Note: A powershell profile is a set of instructions to run, when you first begin a powershell session. 
+
+In this documentation, any command starting with `python` will be run through the powershell terminal since powershell is configured to recognize "python" as an alias.
 
 ## Note
 
@@ -60,7 +76,7 @@ python -m pip install uvicorn
 
 Create a `main.py` file:
 
-[projectRoot]/src/main.py
+[projectRoot]/learn/fastapi/src1/main.py
 ``` python
 from fastapi import FastAPI
 
@@ -73,13 +89,20 @@ def root():
 
 Run the server:
 
-[projectRoot]/src:
+[projectRoot]/learn/fastapi/src1:
 ``` shell
-cd ./src
-uvicorn main:app --reload
+cd ./learn/fastapi/src1
+python -m uvicorn main:app --reload
 ```
 
 Note: Remember to run this command in a separate `powershell` terminal outside of `vscode` or the command may not be recognized within `vscode`.
+
+Note: A convenience powershell script was made to run the fastAPI server:
+
+``` shell
+# run the main.py server through a convenience script (shorter command)
+./run.ps1
+```
 
 The server should run at: [http://127.0.0.1:8000/](http://127.0.0.1:8000/) by default. You should see your `{"Hi": "World"}` message when accessing this url.
 
@@ -94,7 +117,7 @@ Note: for convenience, I have wrapped this sample `curl` request in a `.bat` scr
 
 [projectRoot]/
 ``` shell
-.\bat\get.bat
+.\learn\fastapi\bat\get.bat
 # Output: {"Hi":"World!"}
 ```
 
@@ -133,12 +156,12 @@ Note: for convenience, I have wrapped this sample post command in a `.bat` scrip
 
 [projectRoot]/
 ``` shell
-.\bat\post.bat {fruitName}
+.\learn\fastapi\bat\post.bat {fruitName}
 
-.\bat\post.bat grape
+.\learn\fastapi\bat\post.bat grape
 # Output: ["grape"]
 
-.\bat\post.bat pear
+.\learn\fastapi\bat\post.bat pear
 # Output: ["grape","pear"]
 ```
 
@@ -155,10 +178,10 @@ def get_item(item_index: int):
 Make sure `items` contains two items:
 
 ``` shell
-.\bat\post.bat cherry
+.\learn\fastapi\bat\post.bat cherry
 # Output: ["cherry"]
 
-.\bat\post.bat banana
+.\learn\fastapi\bat\post.bat banana
 # Output: ["cherry", "banana"]
 ```
 
@@ -172,13 +195,13 @@ curl http://127.0.0.1:8000/item/0
 Or use the convenience `.bat` file:
 
 ``` shell
-.\bat\get_by_index.bat 0
+.\learn\fastapi\bat\get_by_index.bat 0
 # Output: "cherry"
 
-.\bat\get_by_index.bat 1
+.\learn\fastapi\bat\get_by_index.bat 1
 # Output: "banana"
 
-.\bat\get_by_index.bat 2
+.\learn\fastapi\bat\get_by_index.bat 2
 # Output: Internal Server Error
 ```
 
@@ -204,7 +227,7 @@ def get_item(item_index: int):
 If the given index is out of range, a better error message with exception status `404` will be returned.
 
 ``` shell
-.\bat\get_by_index.bat 2
+.\learn\fastapi\bat\get_by_index.bat 2
 # Output: {"detail":"404 Not found: Index(2) out of range in Length(0)"}
 ```
 
@@ -227,7 +250,7 @@ def list_items(limit: int):
 Quickly create many items in the database with a convenience `.bat` script:
 
 ``` shell
-.\bat\load_multiple_items.bat
+.\learn\fastapi\bat\load_multiple_items.bat
 ```
 
 Call the endpoint with a limit of 5:
@@ -240,7 +263,9 @@ curl http://127.0.0.1:8000/items?limit=5
 Convenience script, called with a limit of 5:
 
 ``` shell
-.\bat\get_all.bat 5
+.\learn\fastapi\bat\get_all.bat 5
 # Sample Output: ["blueberry","grape","watermellon","peach","orange"]
 ```
 
+## Next (part 2)
+[Go to "FastAPI (part 2) &gt;&gt;"](./02_FastAPI.md)

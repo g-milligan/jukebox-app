@@ -1,0 +1,1 @@
+curl -X POST -H "Content-Type: application/json" -d "[{\"text\":\"blueberry\"},{\"text\":\"grape\"},{\"text\":\"watermellon\"},{\"text\":\"peach\"},{\"text\":\"orange\"},{\"text\":\"cherry\"},{\"text\":\"raspberry\"},{\"text\":\"banana\"},{\"text\":\"apricot\"},{\"text\":\"mango\"}]" http://127.0.0.1:8000/items
