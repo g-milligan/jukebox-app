@@ -10,3 +10,7 @@ So, feel free to follow the same learning path that I took by reading through th
 
 * [FastAPI (part 1)](./fastapi/docs/01_FastAPI.md)
 * [FastAPI (part 2)](./fastapi/docs/02_FastAPI.md)
+
+### Database: PostgreSQL CRUD
+
+* [PostgreSQL (part 1)](./postgresql_crud/docs/01_postgresql_crud.md)
