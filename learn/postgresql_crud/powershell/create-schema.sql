@@ -28,5 +28,7 @@ CREATE TABLE IF NOT EXISTS animal_species (
     fk_species_id                   integer references species(species_id),
     fk_animal_id                    integer references animal(animal_id),
     animal_species_created_at       timestamp not null,
-    animal_species_modified_at      timestamp not null
+    animal_species_modified_at      timestamp not null,
+    
+    UNIQUE (fk_species_id, fk_animal_id)
 );
