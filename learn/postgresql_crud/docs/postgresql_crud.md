@@ -96,7 +96,31 @@ Then to login to the database and view the tables schema:
 # shortcut to logging into the database
 .\psql_login.ps1
 
-# view the datbase data, including tables
-\d
+# view the datbase data tables
+\dt
+
+# show complete table schema for a specific data table
+\d+ {table_name}
 ```
+
+## Table Schema
+
+Thankfully, the database tables were already generated through a script so anyone viewing this tutorial doesn't have to come up with their own database tables. 
+
+To view how this tutorial database is designed, an entity relational diagram (ERD) can be automatically viewed by using the `pgAdmin` UI that automatically comes with `postgresql`. 
+
+To open the `pgAdmin`, just search for the app through the Windows start menu. 
+
+Find the `mydb_example` database in pgAdmin, right click on it and choose the "ERD for database" option. 
+
+This will open an ERD that will help you visualize the schema that was created by the [create-schema.sql](../powershell/create-schema.sql) script.
+
+"ERD for database" diagram in the `pgAdmin` UI: 
+
+![ERD for database - mydb_example](./images/pgAdmin_generatedERD.png)
+
+## Create Sample Data
+
+
+
 
