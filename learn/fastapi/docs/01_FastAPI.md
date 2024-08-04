@@ -51,6 +51,8 @@ python -m pip --version
 
 ## Youtube Tutorial
 
+From here to the end of this FastAPI tutorial, I am following the steps from this excellent YouTube tutorial:
+
 [Python FastAPI Tutorial: Build a REST API in 15 Minutes
 ](https://www.youtube.com/watch?v=iWS9ogMPOI0)
 

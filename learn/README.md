@@ -8,5 +8,5 @@ So, feel free to follow the same learning path that I took by reading through th
 
 ### FastAPI
 
-* [FastAPI (part 1)](./docs/01_FastAPI.md)
-* [FastAPI (part 2)](./docs/02_FastAPI.md)
+* [FastAPI (part 1)](./fastapi/docs/01_FastAPI.md)
+* [FastAPI (part 2)](./fastapi/docs/02_FastAPI.md)
