@@ -129,4 +129,13 @@ VALUES
 ( 3, 6, current_timestamp, current_timestamp ),
 ( 5, 7, current_timestamp, current_timestamp );
 
-SELECT fk_species_id, fk_animal_id FROM animal_species;
+SELECT 
+	animal_species.fk_species_id,
+	species.species_display_name,
+	animal_species.fk_animal_id, 
+	animal.animal_display_name
+FROM animal_species
+JOIN species
+	ON (species.species_id = animal_species.fk_species_id)
+JOIN animal
+	ON (animal.animal_id = animal_species.fk_animal_id);
