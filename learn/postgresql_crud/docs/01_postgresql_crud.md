@@ -139,4 +139,9 @@ The schema structure of the database is still empty. There is no data, so let's 
 ./load-data.ps1
 ```
 
+Now we have a good sample data set saved in the database across three TABLES: `species`, `animal`, `animal_species`. 
+
+In the next part of the tutorial, we will create the `FastAPI` endpoint routes that will be used to perform CRUD operations on our database.
+
+[PostgreSQL (Part 2)]()
 
