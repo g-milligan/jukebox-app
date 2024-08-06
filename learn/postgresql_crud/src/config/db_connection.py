@@ -1,17 +1,17 @@
 import os
 
 class DBConnection:
-    def getDBName():
+    def getDBName(self):
         return 'mydb_example'
     
-    def getDBHost():
+    def getDBHost(self):
         return 'localhost'
     
-    def getDBPort():
+    def getDBPort(self):
         return 5432
     
-    def getDBUser():
+    def getDBUser(self):
         return os.environ['DB_POSTGRESQL_USER']
     
-    def getDBSecret():
+    def getDBSecret(self):
         return os.environ['DB_POSTGRESQL_PWD']
