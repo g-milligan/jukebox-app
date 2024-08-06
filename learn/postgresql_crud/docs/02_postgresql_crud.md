@@ -59,18 +59,97 @@ python -m pip install psycopg2
 
 In order to take the next simplest step, let's return data from our database. To prove we can do it, we will just fetch data from the `animal` table when we hit the `/` root path at [http://127.0.0.1:8000/](http://127.0.0.1:8000/).
 
-To do this, we need to create a database connection. The database connection code can be defined in a python file called `database.py`. Create `src/config/database.py`. 
+To do this, we need to create a database connection using python.
 
-`learn/postgresql_crud/src/config/database.py`:
+Creating a database connection in python requires us to make design decisions about how the code will be structured. For this connection, I will follow a folder structure using "model, entity and config" as folder names to help organize the different responsibilities of the python code:
+
+* model - has the responsibility of interacting directly with the database. For example, any SQL query will be handled from within the "model" folder. This includes CRUD actions, performed by SQL queries
+* entity - an entity represents a database table... for example the "animal" table can be mapped to an "Animal" dataclass in python. This sub-project has three main entities: `animal`, `species`, `animal_species` because these are the three tables in our database. There may be additional entities which represent individual data columns, as well. 
+* config - this is where connection configuration can be stored. For example, the python code responsible for providing values for the database connection credentials can be written under this "config" folder. 
+
+Here are the main files involved in interacting with the database:
+
+* [src/config/db_connection.py](../src/config/db_connection.py) - Access database connection values (username, password, port, host, database-name) from either environment variables or hard-coded values
+* [src/entity](../src/entity/) - All of the data entities will be defined under this folder. data entities are currently TBD at the time of this writing. First, the data will be accessed as raw values from the database. Later the raw values can be mapped to data entities to ensure the data adheres to expected typing.
+* [src/model/my_database.py](../src/model/my_database.py) - this file establishes the connection to the database and handles potential errors. The python module `psycopg2` is used to establish the database connection. A `get_connection` method provides access to the established connection as a singleton object. "Singleton" means the object instance is only created once, even if the `get_connection` is called multiple times. 
+* [src/model/my_query.py](../src/model/my_query.py) - The SQL queries are defined within this python file. This python file provides public methods used to perform the CRUD operations. 
+
+Here is the result: The `my_query.py` module is imported into the `main.py` file and used to retrieve data from the `animal` table:
+
 ``` python
-# TODO
+from fastapi import FastAPI
+from model.my_query import MyQuery 
+
+app = FastAPI()
+query = MyQuery()
+
+@app.get("/")
+def root():
+    # get animal data from the database
+    return query.get_animals()
 ```
 
-TODO***
+Now, when you hit the endpoint, `/`, you will see raw data being returned in the response, from the database!
+
+Try it out by going to [http://localhost:8000/](http://localhost:8000/) or using the convenience script:
+
+`[projectRoot]`
+``` shell
+.\learn\postgresql_crud\bat\get.bat        
+```
+
+You will see the output raw data coming from the database:
+``` json
+[
+  [1, "Jerry",
+    "jerry",
+    16, false, "2024-08-04T00:05:36.344394",
+    "2024-08-04T00:05:36.344394"
+  ],
+  [2, "Wilkinson Jimbo",
+    "whyjimmy",
+    44, true, "2024-08-04T00:05:36.344394",
+    "2024-08-04T00:05:36.344394"
+  ],
+  [3, "Smifton Wuppledump",
+    "smiffit",
+    4, false, "2024-08-04T00:05:36.344394",
+    "2024-08-04T00:05:36.344394"
+  ],
+  [4, "Tippy",
+    "formerlylumpy",
+    null, true, "2024-08-04T00:05:36.344394",
+    "2024-08-04T00:05:36.344394"
+  ],
+  [5, "Clever Fred",
+    "cled",
+    90, false, "2024-08-04T00:05:36.344394",
+    "2024-08-04T00:05:36.344394"
+  ],
+  [6, "Leon Regalion",
+    "leonr",
+    33, true, "2024-08-04T00:05:36.344394",
+    "2024-08-04T00:05:36.344394"
+  ],
+  [7, "Noof Noof",
+    "noofie",
+    1030, false, "2024-08-04T00:05:36.344394",
+    "2024-08-04T00:05:36.344394"
+  ]
+]
+```
+
+Note: If your database does not have this data, you must first complete the steps in the [previous tutorial](./01_postgresql_crud.md) which creates this data.
+
+## Data Entities
+
+TODO ***
 
 ## API Design
 
-Let's briefly design what our endpoints should be. 
+We have proven we can access data from our database through sending a request to one of our endpoints. 
+
+Now, let's briefly design what our endpoints should be. 
 
 We currently have three database tables: `animal`, `species`, `animal_species`. So for simplicity's sake, let's plan to have our API paths correspond to these tables:
 

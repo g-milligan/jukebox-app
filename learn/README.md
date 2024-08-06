@@ -14,3 +14,4 @@ So, feel free to follow the same learning path that I took by reading through th
 ### Database: PostgreSQL CRUD
 
 * [PostgreSQL (part 1)](./postgresql_crud/docs/01_postgresql_crud.md)
+* [PostgreSQL (part 2)](./postgresql_crud/docs/02_postgresql_crud.md)
