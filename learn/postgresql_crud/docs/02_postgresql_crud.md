@@ -143,7 +143,96 @@ Note: If your database does not have this data, you must first complete the step
 
 ## Data Entities
 
-TODO ***
+Entities help guarantee raw data is stored using the expected format (with the correct fields and values). Entities represent the specific data shape. 
+
+Each database table has its own "entity." In `python`, each "entity" can be defined with a `@dataclass`, which is a special type of python class that is meant to represent a data object. 
+
+The `mydb_example` database entities have been created in this python file: [data_tables.py](../src/entity/data_tables.py)
+
+The endpoint can be updated to require a response that returns a list of `Animal` entities:
+
+``` python
+from fastapi import FastAPI
+from model.my_query import MyQuery 
+from entity.data_tables import Animal
+
+app = FastAPI()
+query = MyQuery()
+
+@app.get("/", response_model=list[Animal])
+def root() -> list[Animal]:
+    return query.get_animals()
+```
+
+Now the response from this endpoint will be structured following the `Animal` entity `@dataclass` structure:
+
+``` json
+[
+  {
+    "animal_id": 1,
+    "animal_key": "jerry",
+    "animal_created_at": "2024-08-04T00:05:36.344394",
+    "animal_modified_at": "2024-08-04T00:05:36.344394",
+    "animal_display_name": "Jerry",
+    "animal_age": 16,
+    "animal_is_friendly": false
+  },
+  {
+    "animal_id": 2,
+    "animal_key": "whyjimmy",
+    "animal_created_at": "2024-08-04T00:05:36.344394",
+    "animal_modified_at": "2024-08-04T00:05:36.344394",
+    "animal_display_name": "Wilkinson Jimbo",
+    "animal_age": 44,
+    "animal_is_friendly": true
+  },
+  {
+    "animal_id": 3,
+    "animal_key": "smiffit",
+    "animal_created_at": "2024-08-04T00:05:36.344394",
+    "animal_modified_at": "2024-08-04T00:05:36.344394",
+    "animal_display_name": "Smifton Wuppledump",
+    "animal_age": 4,
+    "animal_is_friendly": false
+  },
+  {
+    "animal_id": 4,
+    "animal_key": "formerlylumpy",
+    "animal_created_at": "2024-08-04T00:05:36.344394",
+    "animal_modified_at": "2024-08-04T00:05:36.344394",
+    "animal_display_name": "Tippy",
+    "animal_age": null,
+    "animal_is_friendly": true
+  },
+  {
+    "animal_id": 5,
+    "animal_key": "cled",
+    "animal_created_at": "2024-08-04T00:05:36.344394",
+    "animal_modified_at": "2024-08-04T00:05:36.344394",
+    "animal_display_name": "Clever Fred",
+    "animal_age": 90,
+    "animal_is_friendly": false
+  },
+  {
+    "animal_id": 6,
+    "animal_key": "leonr",
+    "animal_created_at": "2024-08-04T00:05:36.344394",
+    "animal_modified_at": "2024-08-04T00:05:36.344394",
+    "animal_display_name": "Leon Regalion",
+    "animal_age": 33,
+    "animal_is_friendly": true
+  },
+  {
+    "animal_id": 7,
+    "animal_key": "noofie",
+    "animal_created_at": "2024-08-04T00:05:36.344394",
+    "animal_modified_at": "2024-08-04T00:05:36.344394",
+    "animal_display_name": "Noof Noof",
+    "animal_age": 1030,
+    "animal_is_friendly": false
+  }
+]
+```
 
 ## API Design
 
