@@ -3,8 +3,30 @@ from dataclasses import dataclass
 import datetime
 from enum import Enum
 
+class TableBase:
+    def default_if_none(self, type, value, default_value):
+        if (value is None):
+            return default_value
+        
+        return type(value)
+        
+    def map_to_self(self, class_name, values = [], column_names: list[str] = []):
+        if not values:
+            return
+        
+        columns_size = len(column_names)
+        values_size = len(values)
+        
+        if columns_size != values_size:
+            raise Exception(f'{class_name}: Cannot map column size({columns_size}) to value size({values_size}) column_names({column_names}) values({values})')
+        
+        i = 0
+        for nameFunc in column_names:
+            setattr(self, nameFunc[0], nameFunc[1](values[i]))
+            i += 1
+
 @dataclass
-class Animal:
+class Animal(TableBase):
     animal_id: int
     animal_key: str
     animal_created_at: datetime.datetime
@@ -13,57 +35,61 @@ class Animal:
     animal_age: int = -1
     animal_is_friendly: bool = False
     def __init__(self, thing = False):
-        if not thing:
-            return
-        # class_attrs = list(filter(lambda key : not key.startswith('_'), dir(self)))
-        # print('TESTING: ', class_attrs)
-        self.animal_id = thing[0]
-        self.animal_display_name = thing[1]
-        self.animal_key = thing[2]
-        self.animal_age = thing[3]
-        self.animal_is_friendly = thing[4]
-        self.animal_created_at = thing[5]
-        self.animal_modified_at = thing[6]
+        self.map_to_self(
+            'Animal', thing,
+            [ 
+            ('animal_id', lambda i : int(i)), 
+            ('animal_display_name', lambda i : self.default_if_none(str, i, '')), 
+            ('animal_key', lambda i : str(i)), 
+            ('animal_age', lambda i : self.default_if_none(int, i, -1)), 
+            ('animal_is_friendly', lambda i : self.default_if_none(bool, i, False)), 
+            ('animal_created_at', lambda i : i), 
+            ('animal_modified_at', lambda i : i),
+            ])
     
 class VoreType(Enum):
-    UNKOWN = 'Unknown'
+    UNKNOWN = 'Unknown'
     CARNIVORE = 'Carnivore'
     HERBIVORE = 'Herbivore'
     OMNIVORE = 'Omnivore'
     
 @dataclass
-class Species:
+class Species(TableBase):
     species_id: int
     species_key: str
     species_created_at: datetime.datetime
     species_modified_at: datetime.datetime
     species_display_name: str = ''
-    species_vore_type: VoreType = VoreType.UNKOWN
+    species_vore_type: VoreType = VoreType.UNKNOWN
     def __init__(self, thing = False):
-        if not thing:
-            return
-        self.species_id = thing[0]
-        self.species_display_name = thing[1]
-        self.species_key = thing[2]
-        self.species_vore_type = thing[3]
-        self.species_created_at = thing[4]
-        self.species_modified_at = thing[5]
+        self.map_to_self(
+            'Species', thing,
+            [
+            ('species_id', lambda i : int(i)),
+            ('species_display_name', lambda i : self.default_if_none(str, i, '')),
+            ('species_key', lambda i : str(i)),
+            ('species_vore_type', lambda i : self.default_if_none(VoreType, i, VoreType.UNKNOWN)), 
+            ('species_created_at', lambda i : i), 
+            ('species_modified_at',  lambda i : i),
+            ])
     
 @dataclass
-class AnimalSpecies:
+class AnimalSpecies(TableBase):
     animal_species_id: int
     fk_species_id: int
     fk_animal_id: int
     animal_species_created_at: datetime.datetime
     animal_species_modified_at: datetime.datetime
     def __init__(self, thing = False):
-        if not thing:
-            return
-        self.animal_species_id = thing[0]
-        self.fk_species_id = thing[1]
-        self.fk_animal_id = thing[2]
-        self.animal_species_created_at = thing[3]
-        self.animal_species_modified_at = thing[4]
+        self.map_to_self(
+            'AnimalSpecies', thing,
+            [
+            ('animal_species_id', lambda i : int(i)),
+            ('fk_species_id', lambda i : int(i)), 
+            ('fk_animal_id', lambda i : int(i)),
+            ('animal_species_created_at', lambda i : i), 
+            ('animal_species_modified_at', lambda i : i),
+            ])
     
 @dataclass
 class CombinedAnimalSpecies:
