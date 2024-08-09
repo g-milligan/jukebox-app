@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+import uvicorn
 from entity.response import PostAnimalsResponse
 from entity.request import PostAnimalRequest
 from model.my_query import MyQuery 
@@ -29,4 +30,13 @@ def root() -> list[AnimalSpecies]:
 
 @app.post("/animals", response_model=PostAnimalsResponse)
 def post_animal(animals: list[PostAnimalRequest]) -> PostAnimalsResponse:
-    return query.add_update.post_animals(animals)
+    return query.add_update.add_animals(animals)
+
+
+
+
+
+if __name__ == "__main__":
+    # run this file through vscode to debug... 
+    # python main.py 
+    uvicorn.run(app, host="0.0.0.0", port=8000)
