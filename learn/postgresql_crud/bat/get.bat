@@ -1,1 +1,0 @@
-curl http://127.0.0.1:8000/ | node -p "JSON.stringify( JSON.parse(require('fs').readFileSync(0) ), 0, 1 )"

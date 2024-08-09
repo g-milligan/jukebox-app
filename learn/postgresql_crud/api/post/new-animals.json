@@ -1,0 +1,16 @@
+[
+    {
+        "animal_display_name": "Fluffy Chinchilly",
+        "animal_is_friendly": true
+    },
+    {
+        "animal_display_name": "Boudro",
+        "animal_age": 14,
+        "animal_is_friendly": true
+    },
+    {
+        "animal_display_name": "Happy Hampster",
+        "animal_age": 5,
+        "animal_key": "heppie"
+    }
+]
