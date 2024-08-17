@@ -1,13 +1,24 @@
 from entity.data_tables import Animal, AnimalSpecies, Species
+from model.my_database import MyDatabase
 
 class MySelect:
-    def __init__(self, cursor) -> None:
-        self.__cursor = cursor
-    
+    def __init__(self) -> None:
+        self.__connection = MyDatabase().get_connection()
+        self.__cursor = self.__connection.cursor()
+
     def __run_query_all(self, sql_query):
-        self.__cursor.execute(sql_query)
-        print('Run select all:', sql_query)
-        return self.__cursor.fetchall()
+        try:
+            self.__cursor.execute(sql_query)
+            print('Run select all:', sql_query)
+            return self.__cursor.fetchall()
+        except(Exception) as error:
+            print('Error select all:', error)
+            
+            # reset cursor
+            self.__cursor.close()
+            self.__connection.close()
+            self.__connection = MyDatabase().get_connection()
+            self.__cursor = self.__connection.cursor()
     
     def get_animals(self) -> list[Animal]:
         animals = self.__run_query_all('SELECT * FROM animal')
